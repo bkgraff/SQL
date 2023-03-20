@@ -1,0 +1,90 @@
+--Created a Table full of information about actors and directors! (some of my favorites)
+-- I've inlcuded basic info, films they've worked on, and basic award stats
+
+CREATE TABLE celebs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    fullname TEXT,
+    age INTEGER,
+    occupation TEXT);
+    
+INSERT INTO celebs ( fullname, age, occupation) VALUES ("anthony_h", "85", "actor");
+INSERT INTO celebs (fullname, age, occupation) VALUES ("phoebe_wb", "39", "actor");
+INSERT INTO celebs (fullname, age, occupation) VALUES ("steven_s", "76", "director");
+INSERT INTO celebs (fullname, age, occupation) VALUES ("paul_m", "27", "actor");
+INSERT INTO celebs (fullname, age, occupation) VALUES ("elizabeth_b", "49", "actor"); 
+INSERT INTO celebs (fullname, age, occupation) VALUES ("christopher_n", "52", "director"); 
+INSERT INTO celebs (fullname, age, occupation) VALUES ("sjp", "57", "actor"); 
+INSERT INTO celebs (fullname, age, occupation) VALUES ("miranda_c", "29", "actor"); 
+INSERT INTO celebs (fullname, age, occupation) VALUES ("greta_g", "39", "director"); 
+INSERT INTO celebs (fullname, age, occupation) VALUES ("adam_s", "56", "actor"); 
+INSERT INTO celebs (fullname, age, occupation) VALUES ("florence_p", "27", "actor"); 
+INSERT INTO celebs (fullname, age, occupation) VALUES ("nicole_k", "55", "actor"); 
+INSERT INTO celebs (fullname, age, occupation) VALUES ("reese_w", "46", "actor"); 
+INSERT INTO celebs (fullname, age, occupation) VALUES ("meryl_s", "73", "actor"); 
+INSERT INTO celebs (fullname, age, occupation) VALUES ("anne_h", "40", "actor"); 
+
+CREATE TABLE movies (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    celeb_id INTEGER,
+    title TEXT,
+    premier_year INTEGER,
+    oscars TEXT);
+    
+INSERT INTO movies (celeb_id, title, premier_year, oscars) VALUES ("1", "silence of the lambs", "1991", "5");
+INSERT INTO movies (celeb_id, title, premier_year, oscars) VALUES ("3", "schindler's list", "1993", "2");
+INSERT INTO movies (celeb_id, title, premier_year) VALUES ("5", "the hunger games", "2012");
+INSERT INTO movies (celeb_id, title, premier_year, oscars) VALUES ("6", "inception", "2010", "4");
+INSERT INTO movies (celeb_id, title, premier_year) VALUES ("2", "solo", "2018");
+INSERT INTO movies (celeb_id, title, premier_year) VALUES ("4", "aftersun", "2022");
+INSERT INTO movies (celeb_id, title, premier_year) VALUES ("15", "the devil wears prada", "2006");
+INSERT INTO movies (celeb_id, title, premier_year, oscars) VALUES ("12", "moulin rouge", "2001", "2");
+INSERT INTO movies (celeb_id, title, premier_year) VALUES ("7", "hocus pocus", "1993");
+INSERT INTO movies (celeb_id, title, premier_year) VALUES ("10", "uncut gems", "2019");
+INSERT INTO movies (celeb_id, title, premier_year, oscars) VALUES ("9", "little women", "2019", "1");
+INSERT INTO movies (celeb_id, title, premier_year, oscars) VALUES ("13", "walk the line", "2005", "1");
+INSERT INTO movies (celeb_id, title, premier_year) VALUES ("8", "school of rock", "2003");
+INSERT INTO movies (celeb_id, title, premier_year, oscars) VALUES ("11", "little women", "2019", "1");
+INSERT INTO movies (celeb_id, title, premier_year) VALUES ("14", "the devil wears prada", "2006");
+
+CREATE TABLE career (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    celeb_id INTEGER,
+    total_awards INTEGER);
+    
+INSERT INTO career (celeb_id, total_awards) VALUES ("2", "33");
+INSERT INTO career (celeb_id, total_awards) VALUES ("4", "8");
+INSERT INTO career (celeb_id, total_awards) VALUES ("6", "145");
+INSERT INTO career (celeb_id, total_awards) VALUES ("3", "208");
+INSERT INTO career (celeb_id, total_awards) VALUES ("1", "71");
+INSERT INTO career (celeb_id, total_awards) VALUES ("5", "13");
+
+CREATE TABLE movie_buddies (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, 
+    celeb1_id INTEGER,
+    celeb2_id INTEGER);
+INSERT INTO movie_buddies (celeb1_id, celeb2_id) VALUES ("11", "9");
+INSERT INTO movie_buddies (celeb1_id, celeb2_id) VALUES ("14", "15");
+
+-- Viewing the names from the celebs table and the movies corresponding with them
+SELECT celebs.fullname, movies.title FROM celebs
+JOIN movies
+ON celebs.id = movies.celeb_id; 
+
+-- Viewing the celebs, films they worked on, and how many oscars that film won 
+SELECT celebs.fullname, movies.title, movies.oscars FROM celebs
+OUTER LEFT JOIN movies
+ON celebs.id = movies.celeb_id;
+
+-- how many total awards has each celeb won?
+SELECT celebs.fullname, career.total_awards, movies.title FROM career
+JOIN celebs
+ON career.celeb_id = celebs.id
+JOIN movies
+ON movies.celeb_id = career.celeb_id;
+
+-- I created a table including two pairs of celebs that worked on the same films in my previous table
+SELECT a.fullname, b.fullname FROM movie_buddies
+JOIN celebs a
+ON movie_buddies.celeb1_id = a.id
+JOIN celebs b
+ON movie_buddies.celeb2_id = b.id
