@@ -1,0 +1,44 @@
+
+-- Which artist released the longest song?
+SELECT artist_name, duration_ms
+FROM BIT_DB.Spotifydata
+ORDER BY duration_ms Desc
+LIMIT 1
+
+-- What what were the top 10 most loud songs in descending order?
+SELECT artist_name, loudness
+FROM BIT_DB.Spotifydata
+GROUP BY artist_name 
+ORDER BY loudness DESC
+LIMIT 10
+
+-- What was the average tempo of the Top 50 Songs?
+SELECT AVG(tempo)
+FROM BIT_DB.Spotifydata
+
+-- In descending order, which artists' songs had a tempo between 100 and 120 bpm?
+SELECT artist_name, tempo
+FROM BIT_DB.Spotifydata
+WHERE tempo > 100
+AND tempo < 120
+GROUP BY artist_name
+ORDER BY tempo DESC 
+
+-- Many of the top songs had an "instrumentalness" value of 0. Which tracks had a value greater than 0 in this category?
+SELECT track_name, artist_name, instrumentalness
+FROM BIT_DB.Spotifydata
+WHERE instrumentalness > 0
+GROUP BY track_name
+
+-- Creating a CTE to tag artists with a popularity score of 90 or above as a "Top Star"
+WITH popularity_average_CTE AS (
+SELECT s.artist_name,
+AVG(s.popularity) AS average_popularity
+FROM SpotifyData s 
+GROUP BY s.artist_name
+)
+SELECT  artist_name,
+        average_popularity,
+        'Top Star' AS tag
+FROM popularity_average_CTE
+WHERE average_popularity>=90;
