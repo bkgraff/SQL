@@ -14,3 +14,22 @@ rating,
 FROM safety_average_cte
 WHERE rating >=4
 
+-- With this same data set, how can we use a window function to view the safety rating of both bike lanes on each street and the average saftey rating?
+SELECT street, safetyrating,
+AVG(safetyrating) OVER (PARTITION BY street) as "Average_safety_rating"
+FROM CityBikeLanes
+
+-- Further illustrating how we can view the average safety rating of the bike lanes on 2nd St with a window function.
+SELECT street, safetyrating,
+AVG(safetyrating) OVER (PARTITION BY street) as "Average_safety_rating"
+FROM CityBikeLanes
+WHERE street='2nd'
+
+-- How can we create a list of reccommended actions for the bike lanes based on the average saftey ratings?
+SELECT street, safetyrating,
+AVG(safetyrating) OVER (PARTITION BY street) as "Average_safety_rating",
+CASE WHEN AVG(safetyrating) OVER (PARTITION BY street) >=4 THEN "Leave As-Is"
+    WHEN AVG(safetyrating) OVER (PARTITION BY street) <2.5 THEN "Remove"
+    ELSE "Improvements Needed"
+    END AS "Recommendation"
+FROM CityBikeLanes
