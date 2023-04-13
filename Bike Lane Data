@@ -1,0 +1,16 @@
+--Practing creating CTE's to find more specific information in the data
+
+-- This table holds data about a city's bike lanes, including their safety ratings. 
+-- How can we create a CTE that labels bike lanes on each street as safe when they have an average safety higher than 4?
+WITH safety_average_cte AS (
+SELECT street, AVG(safetyrating) as 'rating'
+FROM citybikelanes
+GROUP BY street)
+
+SELECT 
+street,
+rating,
+'safe lane' as 'label'
+FROM safety_average_cte
+WHERE rating >=4
+
