@@ -1,0 +1,7 @@
+SELECT FirstName, LastName, CustomerID, Country 
+FROM chinook.customers
+Where Country <> 'USA'
+
+SELECT * 
+FROM chinook.customers
+Where Country = 'Brazil'
