@@ -1,0 +1,14 @@
+SELECT FirstName, LastName, CustomerID, Country 
+FROM chinook.customers
+Where Country <> 'USA'
+
+SELECT * 
+FROM chinook.customers
+Where Country = 'Brazil
+
+SELECT customers.FirstName, customers.LastName, invoices.InvoiceId, invoices.InvoiceDate, 
+invoices.BillingCountry
+FROM chinook.customers customers
+JOIN chinook.invoices invoices 
+ON customers.CustomerId = invoices.CustomerId
+WHERE invoices.BillingCountry = 'Brazil'
