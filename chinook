@@ -12,3 +12,7 @@ FROM chinook.customers customers
 JOIN chinook.invoices invoices 
 ON customers.CustomerId = invoices.CustomerId
 WHERE invoices.BillingCountry = 'Brazil'
+
+SELECT FirstName, LastName, Title 
+FROM chinook.employees
+WHERE Title LIKE '%Sales%'
